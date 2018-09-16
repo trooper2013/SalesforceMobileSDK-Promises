@@ -18,11 +18,10 @@ Pod::Spec.new do |s|
   s.default_subspec  = 'SalesforceMobileSDK-iOS-Promises'
 
   s.subspec 'SalesforceMobileSDK-iOS-Promises' do |salesforceswiftpromises|
-
-      salesforceswiftpromises.dependency 'SmartSync'
-      salesforceswiftpromises.dependency 'SmartStore'
-      salesforceswiftpromises.dependency 'SalesforceSDKCore'
-      salesforceswiftpromises.dependency 'SalesforceAnalytics'
+      salesforceswiftpromises.dependency 'SmartSync', :git => "https://github.com/forcedotcom/SalesforceMobileSDK-iOS", :branch => "dev"
+      salesforceswiftpromises.dependency 'SmartStore' , :git => "https://github.com/forcedotcom/SalesforceMobileSDK-iOS", :branch => "dev"
+      salesforceswiftpromises.dependency 'SalesforceSDKCore', :git => "https://github.com/forcedotcom/SalesforceMobileSDK-iOS", :branch => "dev"
+      salesforceswiftpromises.dependency 'SalesforceAnalytics' , :git => "https://github.com/forcedotcom/SalesforceMobileSDK-iOS", :branch => "dev"
       salesforceswiftpromises.dependency 'PromiseKit', '~> 6.0'
       salesforceswiftpromises.source_files = 'SalesforceMobileSDK-iOS-Promises/**/*.{h,m,swift}'
       salesforceswiftpromises.requires_arc = true
