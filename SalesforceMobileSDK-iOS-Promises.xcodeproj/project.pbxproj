@@ -26,6 +26,14 @@
 		B76CC1BA214EF39B0023D147 /* SmartStoreClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CC1B2214EF39B0023D147 /* SmartStoreClientTests.swift */; };
 		B76CC1BB214EF39B0023D147 /* SmartSyncManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CC1B3214EF39B0023D147 /* SmartSyncManagerTests.swift */; };
 		B76CC1BC214EF39B0023D147 /* SyncManagerBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CC1B4214EF39B0023D147 /* SyncManagerBaseTest.swift */; };
+		B76CC1BE215026770023D147 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1BD215026770023D147 /* CocoaLumberjack.framework */; };
+		B76CC1C0215026770023D147 /* FMDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1BF215026770023D147 /* FMDB.framework */; };
+		B76CC1C2215026770023D147 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C1215026770023D147 /* PromiseKit.framework */; };
+		B76CC1C4215026770023D147 /* SalesforceAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C3215026770023D147 /* SalesforceAnalytics.framework */; };
+		B76CC1C6215026770023D147 /* SalesforceSDKCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C5215026770023D147 /* SalesforceSDKCore.framework */; };
+		B76CC1C8215026770023D147 /* SmartStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C7215026770023D147 /* SmartStore.framework */; };
+		B76CC1CA215026770023D147 /* SmartSync.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C9215026770023D147 /* SmartSync.framework */; };
+		B76CC1CC215026770023D147 /* SQLCipher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1CB215026770023D147 /* SQLCipher.framework */; };
 		D0A44D81F5D2354B43978559 /* Pods_SalesforceMobileSDK_iOS_Promises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CA0FD18A99FE54CE5D760B /* Pods_SalesforceMobileSDK_iOS_Promises.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +72,14 @@
 		B76CC1B2214EF39B0023D147 /* SmartStoreClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmartStoreClientTests.swift; sourceTree = "<group>"; };
 		B76CC1B3214EF39B0023D147 /* SmartSyncManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmartSyncManagerTests.swift; sourceTree = "<group>"; };
 		B76CC1B4214EF39B0023D147 /* SyncManagerBaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncManagerBaseTest.swift; sourceTree = "<group>"; };
+		B76CC1BD215026770023D147 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76CC1BF215026770023D147 /* FMDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FMDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76CC1C1215026770023D147 /* PromiseKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PromiseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76CC1C3215026770023D147 /* SalesforceAnalytics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SalesforceAnalytics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76CC1C5215026770023D147 /* SalesforceSDKCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SalesforceSDKCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76CC1C7215026770023D147 /* SmartStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SmartStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76CC1C9215026770023D147 /* SmartSync.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SmartSync.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76CC1CB215026770023D147 /* SQLCipher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SQLCipher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E89D4003D1C8F2165508B5B6 /* Pods-SalesforceMobileSDK-iOS-Promises.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SalesforceMobileSDK-iOS-Promises.release.xcconfig"; path = "Pods/Target Support Files/Pods-SalesforceMobileSDK-iOS-Promises/Pods-SalesforceMobileSDK-iOS-Promises.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,6 +88,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B76CC1BE215026770023D147 /* CocoaLumberjack.framework in Frameworks */,
+				B76CC1C0215026770023D147 /* FMDB.framework in Frameworks */,
+				B76CC1C2215026770023D147 /* PromiseKit.framework in Frameworks */,
+				B76CC1C4215026770023D147 /* SalesforceAnalytics.framework in Frameworks */,
+				B76CC1C6215026770023D147 /* SalesforceSDKCore.framework in Frameworks */,
+				B76CC1C8215026770023D147 /* SmartStore.framework in Frameworks */,
+				B76CC1CA215026770023D147 /* SmartSync.framework in Frameworks */,
+				B76CC1CC215026770023D147 /* SQLCipher.framework in Frameworks */,
 				D0A44D81F5D2354B43978559 /* Pods_SalesforceMobileSDK_iOS_Promises.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,6 +114,14 @@
 		8C7E4213EA5542D95EF56583 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B76CC1BD215026770023D147 /* CocoaLumberjack.framework */,
+				B76CC1BF215026770023D147 /* FMDB.framework */,
+				B76CC1C1215026770023D147 /* PromiseKit.framework */,
+				B76CC1C3215026770023D147 /* SalesforceAnalytics.framework */,
+				B76CC1C5215026770023D147 /* SalesforceSDKCore.framework */,
+				B76CC1C7215026770023D147 /* SmartStore.framework */,
+				B76CC1C9215026770023D147 /* SmartSync.framework */,
+				B76CC1CB215026770023D147 /* SQLCipher.framework */,
 				32CA0FD18A99FE54CE5D760B /* Pods_SalesforceMobileSDK_iOS_Promises.framework */,
 			);
 			name = Frameworks;
