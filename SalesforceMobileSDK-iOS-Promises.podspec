@@ -19,6 +19,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'SalesforceMobileSDK-iOS-Promises' do |salesforceswiftpromises|
       salesforceswiftpromises.dependency 'PromiseKit', '~> 6.0'
+      salesforceswiftpromises.dependency 'SmartSync'
       salesforceswiftpromises.source_files = 'SalesforceMobileSDK-iOS-Promises/**/*.{h,m,swift}'
       salesforceswiftpromises.requires_arc = true
 
