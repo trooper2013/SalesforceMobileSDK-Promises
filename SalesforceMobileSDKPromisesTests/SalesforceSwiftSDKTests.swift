@@ -50,6 +50,7 @@ class SalesforceSwiftSDKTests: SalesforceSwiftSDKBaseTest {
     func testConfiguration() {
         XCTAssertNotNil(SalesforceSwiftSDKTests.testConfig)
         XCTAssertNotNil(SalesforceSwiftSDKTests.testCredentials)
+        
         SalesforceSwiftSDKManager.Builder.configure { (appconfig: AppConfig) -> Void in
             appconfig.shouldAuthenticate = false
             appconfig.oauthScopes = ["web", "api"]

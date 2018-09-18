@@ -1,5 +1,5 @@
 {
-    "name": "Authenticator",
+    "name": "SalesforceMobileSDKPromises",
     "version": "0.0.1",
     "private": true,
     "sdkDependencies": {

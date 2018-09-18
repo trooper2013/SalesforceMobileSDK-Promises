@@ -1,7 +1,7 @@
 platform :ios, '11.0'
 
-project 'SalesforceMobileSDK-iOS-Promises.xcodeproj'
-target 'SalesforceMobileSDK-iOS-Promises' do
+project 'SalesforceMobileSDKPromises.xcodeproj'
+target 'SalesforceMobileSDKPromises' do
 
 source 'https://github.com/CocoaPods/Specs.git'
 

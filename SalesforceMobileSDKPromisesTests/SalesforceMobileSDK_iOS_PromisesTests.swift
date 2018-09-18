@@ -1,15 +1,15 @@
 //
-//  SalesforceMobileSDK_iOS_PromisesTests.swift
-//  SalesforceMobileSDK-iOS-PromisesTests
+//  SalesforceMobileSDKPromisesTests.swift
+//  SalesforceMobileSDKPromisesTests
 //
 //  Created by Raj Rao on 9/16/18.
 //  Copyright © 2018 Salesforce. All rights reserved.
 //
 
 import XCTest
-@testable import SalesforceMobileSDK_iOS_Promises
+@testable import SalesforceMobileSDKPromises
 
-class SalesforceMobileSDK_iOS_PromisesTests: XCTestCase {
+class SalesforceMobileSDKPromisesTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
