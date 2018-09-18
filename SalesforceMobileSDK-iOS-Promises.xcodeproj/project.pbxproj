@@ -80,6 +80,7 @@
 		B76CC1C7215026770023D147 /* SmartStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SmartStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76CC1C9215026770023D147 /* SmartSync.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SmartSync.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76CC1CB215026770023D147 /* SQLCipher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SQLCipher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76CC1FC215165790023D147 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		E89D4003D1C8F2165508B5B6 /* Pods-SalesforceMobileSDK-iOS-Promises.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SalesforceMobileSDK-iOS-Promises.release.xcconfig"; path = "Pods/Target Support Files/Pods-SalesforceMobileSDK-iOS-Promises/Pods-SalesforceMobileSDK-iOS-Promises.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -163,6 +164,7 @@
 				B76CC19B214EF3520023D147 /* Classes */,
 				B76CC184214EF3200023D147 /* SalesforceMobileSDK_iOS_Promises.h */,
 				B76CC185214EF3200023D147 /* Info.plist */,
+				B76CC1FC215165790023D147 /* module.modulemap */,
 			);
 			path = "SalesforceMobileSDK-iOS-Promises";
 			sourceTree = "<group>";
@@ -443,6 +445,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MODULEMAP_PRIVATE_FILE = "SalesforceMobileSDK-iOS-Promises/module.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -500,6 +503,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MODULEMAP_PRIVATE_FILE = "SalesforceMobileSDK-iOS-Promises/module.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
