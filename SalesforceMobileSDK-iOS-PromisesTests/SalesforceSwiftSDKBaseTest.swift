@@ -26,7 +26,7 @@ import XCTest
 import SalesforceSDKCore
 import PromiseKit
 import SmartStore
-@testable import SalesforceSwiftSDK
+@testable import SalesforceMobileSDKPromises
 
 class SalesforceSwiftSDKBaseTest: XCTestCase {
     

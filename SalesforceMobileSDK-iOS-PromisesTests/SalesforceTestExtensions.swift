@@ -25,7 +25,7 @@
 import Foundation
 import PromiseKit
 import SalesforceSDKCore
-import SalesforceSwiftSDK
+import SalesforceMobileSDKPromises
 import XCTest
 
 protocol Defaultable {

@@ -25,7 +25,7 @@
 import XCTest
 import SalesforceSDKCore
 import PromiseKit
-@testable import SalesforceSwiftSDK
+@testable import SalesforceMobileSDKPromises
 
 class SalesforceSwiftSDKTests: SalesforceSwiftSDKBaseTest {
     
