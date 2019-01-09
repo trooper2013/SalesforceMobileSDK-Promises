@@ -149,9 +149,9 @@ extension RestClient {
          Send api wrapped in a promise.
          
          ```
-         let restApi = SFRestAPI.sharedInstance()
-         restApi.Factory.describe(objectType: "Account")
-         .then { request in
+         let restApiPromises = RestClient.shared.promises
+         let request = RestClient.shared.requestForDescribe(withObjectType: "Account")
+       restApiPromises.then { request in
          restApi.send(request: request)
          }
          .done { sfRestResponse in
@@ -164,12 +164,11 @@ extension RestClient {
          ```
          
          ```
-         let restApi = SFRestAPI.sharedInstance()
-         restApi.Factory.describe(objectType: "Account")
-         .then { request in
-         restApi.send(request: request)
-         }
-         .done { sfRestResponse in
+         let restApiPromises = RestClient.shared.promises
+         let request = RestClient.shared.request(forQuery: "")
+         restApiPromises.send(request: request) {
+         
+         } .done { sfRestResponse in
          var restResponse = sfRestResponse.asDecodable(Account.Type)
          ...
          }
