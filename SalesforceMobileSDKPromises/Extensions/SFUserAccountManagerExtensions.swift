@@ -41,12 +41,12 @@ import SalesforceSDKCore
  */
 extension UserAccountManager {
     
-    public var Promises : SFUserAccountManagerPromises {
-        return SFUserAccountManagerPromises()
+    public var promises : Promises {
+        return Promises()
     }
     
     /// SFUserAccountManagerPromises Available api(s) wrapped in promises
-    public class SFUserAccountManagerPromises {
+    public struct Promises {
        
         init() {
         }
@@ -64,7 +64,7 @@ extension UserAccountManager {
          */
         public func login() -> Promise<UserAccount> {
             return Promise {  resolver in
-                UserAccountManager.sharedInstance().login(onSuccess: { (oauthInfo, userAccount) in
+                UserAccountManager.shared.login(onSuccess: { (oauthInfo, userAccount) in
                     resolver.fulfill(userAccount)
                 }, onFailure: { (oauthInfo, error) in
                         resolver.reject(error)
@@ -85,9 +85,9 @@ extension UserAccountManager {
          - Parameter credentials: The Credentials to refresh.
          - Returns: A Promise with SFUserAccount
          */
-        public func refresh(credentials: AuthCredentials) -> Promise<UserAccount>  {
+        public func refresh(credentials: OAuthCredentials) -> Promise<UserAccount>  {
             return Promise {  resolver in
-                UserAccountManager.sharedInstance().refresh(credentials: credentials, onSuccess: { (authInfo, userAccount) in
+                UserAccountManager.shared.refresh(using: credentials, onSuccess: { (authInfo, userAccount) in
                     resolver.fulfill(userAccount)
                 }, onFailure: { (authInfo, error) in
                     resolver.reject(error)
@@ -109,7 +109,7 @@ extension UserAccountManager {
          */
         public func logout() -> Promise<Void> {
             return Promise { resolver in
-                UserAccountManager.sharedInstance().logout()
+                UserAccountManager.shared.logout()
                 resolver.fulfill(())
             }
         }
@@ -128,7 +128,7 @@ extension UserAccountManager {
          */
         public func logoutAllUsers() -> Promise<Void> {
             return Promise { resolver in
-                UserAccountManager.sharedInstance().logoutAllUsers()
+                UserAccountManager.shared.logoutAllUsers()
                 resolver.fulfill(())
             }
         }
@@ -148,7 +148,7 @@ extension UserAccountManager {
          */
         public func logoutUser(userAccount: UserAccount) -> Promise<Void> {
             return Promise { resolver in
-                UserAccountManager.sharedInstance().logoutUser(userAccount)
+                UserAccountManager.shared.logout(userAccount)
                 resolver.fulfill(())
             }
         }
@@ -168,7 +168,7 @@ extension UserAccountManager {
          */
         public func switchToUser(userAccount: UserAccount) -> Promise<UserAccount> {
             return Promise { resolver in
-                UserAccountManager.sharedInstance().switch(toUser: userAccount)
+                UserAccountManager.shared.switchToUserAccount(userAccount)
                 resolver.fulfill(userAccount)
             }
         }
@@ -188,7 +188,7 @@ extension UserAccountManager {
         public func switchToNewUser() -> Promise<UserAccount> {
             return Promise<UserAccount> { resolver in
                 self.login().then { newUser -> Promise<UserAccount>  in
-                    UserAccountManager.sharedInstance().switch(toUser: newUser)
+                    UserAccountManager.shared.switchToUserAccount(newUser)
                     return Promise { resolver in
                         resolver.fulfill(newUser)
                     }

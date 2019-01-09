@@ -22,6 +22,7 @@
  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
  WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import SalesforceSDKCommon
 import SalesforceAnalytics
 
 /** SalesforceSDK's Swift component logger.
@@ -30,14 +31,16 @@ import SalesforceAnalytics
  SalesforceSwiftLogger.sharedInstance().e(SomeClass.self, message: "Error occured")
  ```
  */
-public class SalesforceSwiftLogger: SFSDKLogger {
+public class SalesforceSwiftLogger: SalesforceLogger {
    
     public static let kSFSDKComponentName = "SalesforceSwiftSDK"
+    
+    
     
     /// Return a Logger instance
     ///
     /// - Returns: instance of the swift component logger.
-    override public class func sharedInstance() -> SalesforceSwiftLogger {
-         return self.sharedInstance(withComponent: kSFSDKComponentName)
+    public class func sharedInstance() -> SalesforceSwiftLogger {
+        return super.logger(forComponent: kSFSDKComponentName) as! SalesforceSwiftLogger
     }
 }

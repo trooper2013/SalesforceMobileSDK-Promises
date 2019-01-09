@@ -63,12 +63,12 @@ firstly {
  */
 extension SyncManager {
     
-    public var Promises : SFSmartSyncSyncManagerPromises {
-        return SFSmartSyncSyncManagerPromises(api: self)
+    public var promises : Promises {
+        return Promises(api: self)
     }
     
     /// SF SmartSyncSyncManager api(s) wrapped in promises.
-    public class SFSmartSyncSyncManagerPromises {
+    public struct Promises {
 
         weak var api: SyncManager?
 
@@ -90,7 +90,7 @@ extension SyncManager {
          */
         public func getSyncStatus(syncId: UInt) -> Promise<SyncState?> {
             return Promise {  resolver in
-                resolver.fulfill(self.api!.getSyncStatus(NSNumber(value: syncId)))
+                resolver.fulfill(self.api!.syncStatus(forId: NSNumber(value: syncId)))
             }
         }
 
@@ -108,7 +108,7 @@ extension SyncManager {
          */
         public func getSyncStatus(name: String) -> Promise<SyncState?> {
             return Promise {  resolver in
-                resolver.fulfill(self.api!.getSyncStatus(syncName: name))
+                resolver.fulfill(self.api!.syncStatus(forName: name))
             }
         }
 
@@ -126,7 +126,7 @@ extension SyncManager {
          */
         public func hasSync(name: String) -> Promise<Bool> {
             return Promise {  resolver in
-                resolver.fulfill(self.api!.hasSync(syncName: name))
+                resolver.fulfill(self.api!.hasSync(forName: name))
             }
         }
         
@@ -143,7 +143,7 @@ extension SyncManager {
          */
         public func deleteSync(syncId: UInt) -> Promise<Void>  {
             return Promise {  resolver in
-                resolver.fulfill(self.api!.deleteSync(syncId: NSNumber(value: syncId)))
+                resolver.fulfill(self.api!.deleteSync(forId: NSNumber(value: syncId)))
             }
         }
 
@@ -160,7 +160,7 @@ extension SyncManager {
          */
         public func deleteSync(name: String) -> Promise<Void>  {
             return Promise {  resolver in
-                resolver.fulfill(self.api!.deleteSync(syncName:name))
+                resolver.fulfill(self.api!.deleteSync(forName:name))
             }
         }
 
@@ -292,7 +292,7 @@ extension SyncManager {
 
         public func reSync(syncId: UInt) -> Promise<SyncState> {
             return Promise {  resolver in
-                self.api!.reSync(syncId: NSNumber(value: syncId)) { (syncState) in
+                self.api!.reSync(id: NSNumber(value: syncId)) { (syncState) in
                     if syncState.status == .done  {
                         resolver.fulfill(syncState)
                     } else if syncState.status == .failed {
@@ -320,7 +320,7 @@ extension SyncManager {
          */
         public func reSync(syncName: String) -> Promise<SyncState> {
             return Promise {  resolver in
-                self.api!.reSync(syncName: syncName) { (syncState) in
+                self.api!.reSync(named: syncName) { (syncState) in
                     if syncState.status == .done  {
                         resolver.fulfill(syncState)
                     } else if syncState.status == .failed {
@@ -452,7 +452,7 @@ extension SyncManager {
          */
         public func cleanResyncGhosts(syncId: UInt) -> Promise<(SyncStatus, UInt)> {
             return Promise {  resolver in
-                self.api!.cleanResyncGhosts(syncId: NSNumber(value: syncId)) { (syncStatus, numRecords) in
+                self.api!.cleanResyncGhosts(forId: NSNumber(value: syncId)) { (syncStatus, numRecords) in
                     if syncStatus == .done  {
                         resolver.fulfill((syncStatus, numRecords))
                     } else if syncStatus == .failed {

@@ -35,6 +35,7 @@ enum SmartStoreError : Error {
     case StoreNotFoundError
     case SoupNotFoundError
     case IndicesNotFoundError
+    case InvalidStateError
 }
 
 /** Extension of SFQuerySpec with a Builder.
@@ -164,12 +165,12 @@ extension QuerySpec {
 /// Extension of SFSmartStore.
 extension SmartStore {
     
-    public var Promises : SFSmartStorePromises {
+    public var promises : SFSmartStorePromises {
         return SFSmartStorePromises(api: self)
     }
     
     /// Smart Store api(s) wrapped in promises.
-    public class SFSmartStorePromises {
+    public struct SFSmartStorePromises {
         
         weak var api: SmartStore?
         
@@ -190,8 +191,13 @@ extension SmartStore {
          - Returns: SFSoupSpec wrapped in a promise.
          */
         public func attributes(soupName: String) -> Promise<SoupSpec> {
+            
             return Promise {  resolver in
-                let soupSpec : SoupSpec?  = self.api!.attributes(soupName: soupName)
+                guard let api = self.api else {
+                    resolver.reject(SmartStoreError.InvalidStateError)
+                    return
+                }
+                let soupSpec : SoupSpec?  = api.specification(forSoupNamed: soupName)
                 if let spec = soupSpec {
                      resolver.fulfill(spec)
                 } else {
@@ -214,7 +220,11 @@ extension SmartStore {
          */
         public func indices(soupName: String) -> Promise<[Any]> {
             return Promise {  resolver in
-                let indices : [Any]?  = self.api!.indices(soupName: soupName)
+                guard let api = self.api else {
+                    resolver.reject(SmartStoreError.InvalidStateError)
+                    return
+                }
+                let indices : [Any]?  = api.indices(forSoupNamed: soupName)
                 if let indices = indices {
                     resolver.fulfill(indices)
                 } else {
@@ -237,7 +247,11 @@ extension SmartStore {
          */
         public func soupExists(soupName: String) -> Promise<Bool> {
             return Promise {  resolver in
-                let result  = self.api!.soupExists(soupName)
+                guard let api = self.api else {
+                    resolver.reject(SmartStoreError.InvalidStateError)
+                    return
+                }
+                let result  = api.soupExists(forName: soupName)
                 resolver.fulfill(result)
             }
         }
@@ -256,10 +270,15 @@ extension SmartStore {
             - indexSpecs: Array of Index specs
          - Returns: Boolean wrapped in a promise indicating success.
          */
-        public func registerSoup(soupName: String, indexSpecs: [Any]) -> Promise<Bool> {
+        public func registerSoup(soupName: String, indexSpecs: [SoupIndex]) -> Promise<Bool> {
             return Promise {  resolver in
+                
+                guard let api = self.api else {
+                    resolver.reject(SmartStoreError.InvalidStateError)
+                    return
+                }
                 do {
-                    try self.api!.registerSoup(soupName: soupName, indexSpecs: indexSpecs as! [SoupIndex])
+                    try api.registerSoup(withName: soupName, withIndices: indexSpecs)
                     resolver.fulfill(true)
                 } catch let error {
                     resolver.reject(error)
@@ -281,10 +300,14 @@ extension SmartStore {
              - indexSpecs: Array of Index specs
          - Returns: Boolean wrapped in a promise indicating success.
          */
-        public func registerSoup(soupSpec: SoupSpec,indexSpecs: [Any]) -> Promise<Bool> {
+        public func registerSoup(soupSpec: SoupSpec,indexSpecs: [SoupIndex]) -> Promise<Bool> {
             return Promise {  resolver in
                 do {
-                    try self.api!.registerSoup(soupSpec: soupSpec, indexSpecs: indexSpecs as! [SoupIndex])
+                    guard let api = self.api else {
+                        resolver.reject(SmartStoreError.InvalidStateError)
+                        return
+                    }
+                    try api.registerSoup(withSpecification: soupSpec, withIndices: indexSpecs)
                     resolver.fulfill(true)
                 } catch  let error {
                     resolver.reject(error)
@@ -307,8 +330,12 @@ extension SmartStore {
         public func count(querySpec: QuerySpec) -> Promise<UInt> {
             return Promise {  resolver in
                 do {
+                   guard let api = self.api else {
+                        resolver.reject(SmartStoreError.InvalidStateError)
+                        return
+                    }
                     var count: UInt = 0
-                    count = try self.api!.count(querySpec: querySpec).uintValue
+                    count = try api.count(using: querySpec).uintValue
                     resolver.fulfill(count)
                 } catch let error {
                     resolver.reject(error)
@@ -333,8 +360,12 @@ extension SmartStore {
         public func query(querySpec: QuerySpec, pageIndex: UInt)  -> Promise<[Any]> {
             return Promise {  resolver in
                 do {
+                    guard let api = self.api else {
+                        resolver.reject(SmartStoreError.InvalidStateError)
+                        return
+                    }
                     var result: [Any]?
-                    result = try self.api!.query(querySpec: querySpec, pageIndex: pageIndex)
+                    result = try api.query(using: querySpec, startingFromPageIndex: pageIndex)
                     if let result = result {
                         resolver.fulfill(result)
                     } else {
@@ -360,10 +391,14 @@ extension SmartStore {
              - soupName: Name of soup.
          - Returns: Upserted entries wrapped in a promise.
          */
-        public func upsertEntries(entries: [Any],soupName: String) -> Promise<[[String:Any]]> {
+        public func upsertEntries(entries: [[String:Any]],soupName: String) -> Promise<[[String:Any]]> {
             return Promise {  resolver in
+                guard let api = self.api else {
+                    resolver.reject(SmartStoreError.InvalidStateError)
+                    return
+                }
                 var result: [Any] = []
-                result = self.api!.upsert(entries: entries as! [[AnyHashable : Any]], soupName: soupName)
+                result = api.upsert(entries: entries, forSoupNamed: soupName)
                 resolver.fulfill(result as! [[String:Any]])
             }
         }
@@ -386,8 +421,12 @@ extension SmartStore {
         public func upsertEntries(entries: [Any], soupName: String, externalIdPath: String)  -> Promise<[[String:Any]]> {
             return Promise {  resolver in
                 do {
+                    guard let api = self.api else {
+                        resolver.reject(SmartStoreError.InvalidStateError)
+                        return
+                    }
                     var result: [Any] = []
-                    result = try self.api!.upsert(entries: entries, soupName: soupName, externalIdPath: externalIdPath)
+                    result = try  api.upsert(entries: entries, forSoupNamed: soupName, withExternalIdPath: externalIdPath)
                     resolver.fulfill(result as! [[String:Any]])
                 }
                 catch let error {
@@ -415,8 +454,11 @@ extension SmartStore {
         public func lookupSoupEntryId(soupName: String, fieldPath: String, fieldValue: String) -> Promise<NSNumber> {
             return Promise {  resolver in
                 do {
-                    var result: NSNumber = -1
-                    result = try self.api!.lookupSoupEntryId(soupName: soupName, fieldPath: fieldPath, fieldValue: fieldValue)
+                    guard let api = self.api else {
+                        resolver.reject(SmartStoreError.InvalidStateError)
+                        return
+                    }
+                    let result: NSNumber = try api.lookupSoupEntryId(soupNamed: soupName, fieldPath: fieldPath, fieldValue: fieldValue)
                     resolver.fulfill(result)
                 }
                 catch let error {
@@ -438,10 +480,14 @@ extension SmartStore {
              - entryIds: Entries to upsert in the soup
              - soupName: Name of soup.
          */
-        public func removeEntries(entryIds: [Any], soupName: String) -> Promise<Void> {
+        public func removeEntries(entryIds: [NSNumber], soupName: String) -> Promise<Void> {
             return Promise {  resolver in
                 do {
-                    try self.api!.remove(entryIds: entryIds as! [NSNumber], soupName: soupName)
+                    guard let api = self.api else {
+                        resolver.reject(SmartStoreError.InvalidStateError)
+                        return
+                    }
+                    try api.remove(entryIds: entryIds, forSoupNamed: soupName)
                     resolver.fulfill(())
                 }
                 catch let error {
@@ -466,7 +512,11 @@ extension SmartStore {
         public func removeEntries(querySpec: QuerySpec, soupName: String) -> Promise<Void> {
             return Promise {  resolver in
                 do {
-                    try self.api!.removeByQuery(querySpec: querySpec, soupName: soupName)
+                    guard let api = self.api else {
+                        resolver.reject(SmartStoreError.InvalidStateError)
+                        return
+                    }
+                    try api.removeEntries(usingQuerySpec: querySpec, forSoupNamed: soupName)
                     resolver.fulfill(())
                 }
                 catch let error {
@@ -490,7 +540,11 @@ extension SmartStore {
          */
         public func clearSoup(soupName: String) -> Promise<Void> {
             return Promise {  resolver in
-                self.api!.clearSoup(soupName)
+                guard let api = self.api else {
+                    resolver.reject(SmartStoreError.InvalidStateError)
+                    return
+                }
+                api.clearSoup(soupName)
                 resolver.fulfill(())
             }
         }
@@ -508,7 +562,11 @@ extension SmartStore {
          */
         public func removeSoup(soupName: String) -> Promise<Void>{
             return Promise {  resolver in
-                self.api!.removeSoup(soupName)
+                guard let api = self.api else {
+                    resolver.reject(SmartStoreError.InvalidStateError)
+                    return
+                }
+                api.removeSoup(soupName)
                 resolver.fulfill(())
             }
         }
@@ -526,7 +584,11 @@ extension SmartStore {
          */
         public func removeAllSoups() -> Promise<Void>{
             return Promise {  resolver in
-                self.api!.removeAllSoups()
+                guard let api = self.api else {
+                    resolver.reject(SmartStoreError.InvalidStateError)
+                    return
+                }
+                api.removeAllSoups()
                 resolver.fulfill(())
             }
         }
@@ -573,7 +635,7 @@ public class SFSmartStoreClient {
     
     public class func store(withName: String) -> Promise<SmartStore> {
         return Promise { resolver in
-            if let smartStore = SmartStore.sharedStore(name : withName) {
+            if let smartStore = SmartStore.shared(withName: withName) {
                 resolver.fulfill(smartStore)
             } else {
                 return resolver.reject(SmartStoreError.StoreNotFoundError)
@@ -597,7 +659,8 @@ public class SFSmartStoreClient {
      */
     public class func store(withName: String,user: UserAccount) -> Promise<SmartStore> {
         return Promise { resolver in
-            if let smartStore = SmartStore.sharedStore(name : withName,user: user) {
+            if let smartStore = SmartStore.shared(withName: withName, forUserAccount: user) {
+                //SmartStore.sharedStore(name : withName,user: user) {
                 resolver.fulfill(smartStore)
             } else {
                 return resolver.reject(SmartStoreError.StoreNotFoundError)
@@ -619,7 +682,7 @@ public class SFSmartStoreClient {
      */
     public class func globalStore(withName: String) -> Promise<SmartStore> {
         return Promise { resolver in
-            let smartStore = SmartStore.sharedGlobalStore(name : withName)
+            let smartStore = SmartStore.sharedGlobal(withName: withName)
             resolver.fulfill(smartStore)
         }
     }
@@ -638,7 +701,7 @@ public class SFSmartStoreClient {
      */
     public class func removeGlobalStore(withName: String) -> Promise<Void> {
         return Promise { resolver in
-            SmartStore.removeSharedGlobalStore(name:  withName)
+            SmartStore.removeSharedGlobal(withName: withName)
             resolver.fulfill(())
         }
     }
@@ -657,7 +720,7 @@ public class SFSmartStoreClient {
      */
     public class func removeSharedStore(withName: String) -> Promise<Void> {
         return Promise { resolver in
-            SmartStore.removeSharedStore(name:  withName)
+            SmartStore.removeShared(withName: withName)
             resolver.fulfill(())
         }
     }
@@ -675,7 +738,7 @@ public class SFSmartStoreClient {
      */
     public class func removeAllSharedStores() -> Promise<Void> {
         return Promise { resolver in
-            SmartStore.removeAllStores()
+            SmartStore.removeAllForCurrentUser()
             resolver.fulfill(())
         }
     }
@@ -693,7 +756,7 @@ public class SFSmartStoreClient {
      */
     public class func removeAllGlobalStores() -> Promise<Void> {
         return Promise { resolver in
-            SmartStore.removeAllGlobalStores()
+            SmartStore.removeAllGlobal()
             resolver.fulfill(())
         }
     }
