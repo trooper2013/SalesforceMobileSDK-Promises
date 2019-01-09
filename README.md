@@ -18,7 +18,6 @@ var restResponse = sfRestResponse.asJsonDictionary()
 restError = error
 }
 ```
-```
 
 Or, to perform a SmartSync `syncDown()` operation:
 
