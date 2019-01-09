@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B70E9A9721E579CE00A402C6 /* SalesforceSDKCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B70E9A9621E579CE00A402C6 /* SalesforceSDKCommon.framework */; };
+		B70E9A9F21E5867600A402C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70E9A9E21E5867600A402C6 /* AppDelegate.swift */; };
+		B70E9AA121E5867600A402C6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70E9AA021E5867600A402C6 /* ViewController.swift */; };
+		B70E9AA421E5867600A402C6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B70E9AA221E5867600A402C6 /* Main.storyboard */; };
+		B70E9AA621E5867800A402C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B70E9AA521E5867800A402C6 /* Assets.xcassets */; };
+		B70E9AA921E5867800A402C6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B70E9AA721E5867800A402C6 /* LaunchScreen.storyboard */; };
 		B76CC18B214EF3200023D147 /* SalesforceMobileSDKPromises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC181214EF3200023D147 /* SalesforceMobileSDKPromises.framework */; };
-		B76CC190214EF3200023D147 /* SalesforceMobileSDKPromisesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CC18F214EF3200023D147 /* SalesforceMobileSDKPromisesTests.swift */; };
 		B76CC192214EF3200023D147 /* SalesforceMobileSDKPromises.h in Headers */ = {isa = PBXBuildFile; fileRef = B76CC184214EF3200023D147 /* SalesforceMobileSDKPromises.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B76CC19E214EF3520023D147 /* SalesforceSwiftLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CC19C214EF3520023D147 /* SalesforceSwiftLogger.swift */; };
 		B76CC19F214EF3520023D147 /* SalesforceSwiftSDKManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CC19D214EF3520023D147 /* SalesforceSwiftSDKManager.swift */; };
@@ -28,15 +31,19 @@
 		B76CC1BC214EF39B0023D147 /* SyncManagerBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CC1B4214EF39B0023D147 /* SyncManagerBaseTest.swift */; };
 		B76CC1C0215026770023D147 /* FMDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1BF215026770023D147 /* FMDB.framework */; };
 		B76CC1C2215026770023D147 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C1215026770023D147 /* PromiseKit.framework */; };
-		B76CC1C4215026770023D147 /* SalesforceAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C3215026770023D147 /* SalesforceAnalytics.framework */; };
-		B76CC1C6215026770023D147 /* SalesforceSDKCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C5215026770023D147 /* SalesforceSDKCore.framework */; };
-		B76CC1C8215026770023D147 /* SmartStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C7215026770023D147 /* SmartStore.framework */; };
-		B76CC1CA215026770023D147 /* SmartSync.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1C9215026770023D147 /* SmartSync.framework */; };
 		B76CC1CC215026770023D147 /* SQLCipher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76CC1CB215026770023D147 /* SQLCipher.framework */; };
 		D0A44D81F5D2354B43978559 /* Pods_SalesforceMobileSDKPromises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CA0FD18A99FE54CE5D760B /* Pods_SalesforceMobileSDKPromises.framework */; };
+		DCF7C8FB0BB4324EC52D9AF1 /* Pods_SalesforceMobileSDKPromisesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58890B271559BBF477FB62A3 /* Pods_SalesforceMobileSDKPromisesTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		B70E9AB221E5945E00A402C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B76CC178214EF3200023D147 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B70E9A9B21E5867600A402C6;
+			remoteInfo = SalesforceMobileSDKPromisesTestApp;
+		};
 		B76CC18C214EF3200023D147 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B76CC178214EF3200023D147 /* Project object */;
@@ -59,14 +66,23 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2B3A52B04CA8F1A4CCAE7EA9 /* Pods-SalesforceMobileSDKPromisesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SalesforceMobileSDKPromisesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SalesforceMobileSDKPromisesTests/Pods-SalesforceMobileSDKPromisesTests.release.xcconfig"; sourceTree = "<group>"; };
+		2B6329DF80DABB958C8DCD50 /* Pods-SalesforceMobileSDKPromisesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SalesforceMobileSDKPromisesTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SalesforceMobileSDKPromisesTests/Pods-SalesforceMobileSDKPromisesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		32CA0FD18A99FE54CE5D760B /* Pods_SalesforceMobileSDKPromises.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SalesforceMobileSDKPromises.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5656E77B3544EBB1F89FC5F2 /* Pods-SalesforceMobileSDKPromises.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SalesforceMobileSDKPromises.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SalesforceMobileSDKPromises/Pods-SalesforceMobileSDKPromises.debug.xcconfig"; sourceTree = "<group>"; };
+		58890B271559BBF477FB62A3 /* Pods_SalesforceMobileSDKPromisesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SalesforceMobileSDKPromisesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B70E9A9621E579CE00A402C6 /* SalesforceSDKCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SalesforceSDKCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B70E9A9C21E5867600A402C6 /* SalesforceMobileSDKPromisesTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SalesforceMobileSDKPromisesTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B70E9A9E21E5867600A402C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B70E9AA021E5867600A402C6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B70E9AA321E5867600A402C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B70E9AA521E5867800A402C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B70E9AA821E5867800A402C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B70E9AAA21E5867800A402C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B76CC181214EF3200023D147 /* SalesforceMobileSDKPromises.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SalesforceMobileSDKPromises.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76CC184214EF3200023D147 /* SalesforceMobileSDKPromises.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SalesforceMobileSDKPromises.h; sourceTree = "<group>"; };
 		B76CC185214EF3200023D147 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B76CC18A214EF3200023D147 /* SalesforceMobileSDKPromisesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesforceMobileSDKPromisesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B76CC18F214EF3200023D147 /* SalesforceMobileSDKPromisesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesforceMobileSDKPromisesTests.swift; sourceTree = "<group>"; };
 		B76CC191214EF3200023D147 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B76CC19C214EF3520023D147 /* SalesforceSwiftLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesforceSwiftLogger.swift; sourceTree = "<group>"; };
 		B76CC19D214EF3520023D147 /* SalesforceSwiftSDKManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesforceSwiftSDKManager.swift; sourceTree = "<group>"; };
@@ -95,17 +111,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B70E9A9921E5867600A402C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B76CC17D214EF3200023D147 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B70E9A9721E579CE00A402C6 /* SalesforceSDKCommon.framework in Frameworks */,
 				B76CC1C0215026770023D147 /* FMDB.framework in Frameworks */,
 				B76CC1C2215026770023D147 /* PromiseKit.framework in Frameworks */,
-				B76CC1C4215026770023D147 /* SalesforceAnalytics.framework in Frameworks */,
-				B76CC1C6215026770023D147 /* SalesforceSDKCore.framework in Frameworks */,
-				B76CC1C8215026770023D147 /* SmartStore.framework in Frameworks */,
-				B76CC1CA215026770023D147 /* SmartSync.framework in Frameworks */,
 				B76CC1CC215026770023D147 /* SQLCipher.framework in Frameworks */,
 				D0A44D81F5D2354B43978559 /* Pods_SalesforceMobileSDKPromises.framework in Frameworks */,
 			);
@@ -116,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B76CC18B214EF3200023D147 /* SalesforceMobileSDKPromises.framework in Frameworks */,
+				DCF7C8FB0BB4324EC52D9AF1 /* Pods_SalesforceMobileSDKPromisesTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +154,7 @@
 				B76CC1C9215026770023D147 /* SmartSync.framework */,
 				B76CC1CB215026770023D147 /* SQLCipher.framework */,
 				32CA0FD18A99FE54CE5D760B /* Pods_SalesforceMobileSDKPromises.framework */,
+				58890B271559BBF477FB62A3 /* Pods_SalesforceMobileSDKPromisesTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -144,8 +164,23 @@
 			children = (
 				5656E77B3544EBB1F89FC5F2 /* Pods-SalesforceMobileSDKPromises.debug.xcconfig */,
 				E89D4003D1C8F2165508B5B6 /* Pods-SalesforceMobileSDKPromises.release.xcconfig */,
+				2B6329DF80DABB958C8DCD50 /* Pods-SalesforceMobileSDKPromisesTests.debug.xcconfig */,
+				2B3A52B04CA8F1A4CCAE7EA9 /* Pods-SalesforceMobileSDKPromisesTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		B70E9A9D21E5867600A402C6 /* SalesforceMobileSDKPromisesTestApp */ = {
+			isa = PBXGroup;
+			children = (
+				B70E9A9E21E5867600A402C6 /* AppDelegate.swift */,
+				B70E9AA021E5867600A402C6 /* ViewController.swift */,
+				B70E9AA221E5867600A402C6 /* Main.storyboard */,
+				B70E9AA521E5867800A402C6 /* Assets.xcassets */,
+				B70E9AA721E5867800A402C6 /* LaunchScreen.storyboard */,
+				B70E9AAA21E5867800A402C6 /* Info.plist */,
+			);
+			path = SalesforceMobileSDKPromisesTestApp;
 			sourceTree = "<group>";
 		};
 		B76CC177214EF3200023D147 = {
@@ -153,6 +188,7 @@
 			children = (
 				B76CC183214EF3200023D147 /* SalesforceMobileSDKPromises */,
 				B76CC18E214EF3200023D147 /* SalesforceMobileSDKPromisesTests */,
+				B70E9A9D21E5867600A402C6 /* SalesforceMobileSDKPromisesTestApp */,
 				B76CC182214EF3200023D147 /* Products */,
 				8D192BE8767748EEFF79E094 /* Pods */,
 				8C7E4213EA5542D95EF56583 /* Frameworks */,
@@ -164,6 +200,7 @@
 			children = (
 				B76CC181214EF3200023D147 /* SalesforceMobileSDKPromises.framework */,
 				B76CC18A214EF3200023D147 /* SalesforceMobileSDKPromisesTests.xctest */,
+				B70E9A9C21E5867600A402C6 /* SalesforceMobileSDKPromisesTestApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -190,7 +227,6 @@
 				B76CC1B2214EF39B0023D147 /* SmartStoreClientTests.swift */,
 				B76CC1B3214EF39B0023D147 /* SmartSyncManagerTests.swift */,
 				B76CC1B4214EF39B0023D147 /* SyncManagerBaseTest.swift */,
-				B76CC18F214EF3200023D147 /* SalesforceMobileSDKPromisesTests.swift */,
 				B76CC191214EF3200023D147 /* Info.plist */,
 			);
 			path = SalesforceMobileSDKPromisesTests;
@@ -231,6 +267,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		B70E9A9B21E5867600A402C6 /* SalesforceMobileSDKPromisesTestApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B70E9AAB21E5867800A402C6 /* Build configuration list for PBXNativeTarget "SalesforceMobileSDKPromisesTestApp" */;
+			buildPhases = (
+				B70E9A9821E5867600A402C6 /* Sources */,
+				B70E9A9921E5867600A402C6 /* Frameworks */,
+				B70E9A9A21E5867600A402C6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SalesforceMobileSDKPromisesTestApp;
+			productName = SalesforceMobileSDKPromisesTestApp;
+			productReference = B70E9A9C21E5867600A402C6 /* SalesforceMobileSDKPromisesTestApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 		B76CC180214EF3200023D147 /* SalesforceMobileSDKPromises */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76CC195214EF3200023D147 /* Build configuration list for PBXNativeTarget "SalesforceMobileSDKPromises" */;
@@ -256,14 +309,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76CC198214EF3200023D147 /* Build configuration list for PBXNativeTarget "SalesforceMobileSDKPromisesTests" */;
 			buildPhases = (
+				C2C6DEB5BC4F23354704853F /* [CP] Check Pods Manifest.lock */,
 				B76CC186214EF3200023D147 /* Sources */,
 				B76CC187214EF3200023D147 /* Frameworks */,
 				B76CC188214EF3200023D147 /* Resources */,
+				BC673B598B476744E6105A00 /* [CP] Embed Pods Frameworks */,
+				FB2F21BB9E6A8E15B3590820 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				B76CC18D214EF3200023D147 /* PBXTargetDependency */,
+				B70E9AB321E5945E00A402C6 /* PBXTargetDependency */,
 			);
 			name = SalesforceMobileSDKPromisesTests;
 			productName = SalesforceMobileSDKPromisesTests;
@@ -276,15 +333,19 @@
 		B76CC178214EF3200023D147 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0940;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Salesforce;
 				TargetAttributes = {
+					B70E9A9B21E5867600A402C6 = {
+						CreatedOnToolsVersion = 10.1;
+					};
 					B76CC180214EF3200023D147 = {
 						CreatedOnToolsVersion = 9.4.1;
 					};
 					B76CC189214EF3200023D147 = {
 						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = B70E9A9B21E5867600A402C6;
 					};
 				};
 			};
@@ -294,6 +355,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = B76CC177214EF3200023D147;
 			productRefGroup = B76CC182214EF3200023D147 /* Products */;
@@ -301,12 +363,23 @@
 			projectRoot = "";
 			targets = (
 				B76CC180214EF3200023D147 /* SalesforceMobileSDKPromises */,
+				B70E9A9B21E5867600A402C6 /* SalesforceMobileSDKPromisesTestApp */,
 				B76CC189214EF3200023D147 /* SalesforceMobileSDKPromisesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B70E9A9A21E5867600A402C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B70E9AA921E5867800A402C6 /* LaunchScreen.storyboard in Resources */,
+				B70E9AA621E5867800A402C6 /* Assets.xcassets in Resources */,
+				B70E9AA421E5867600A402C6 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B76CC17F214EF3200023D147 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -339,6 +412,56 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SalesforceMobileSDKPromises/Pods-SalesforceMobileSDKPromises-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BC673B598B476744E6105A00 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-SalesforceMobileSDKPromisesTests/Pods-SalesforceMobileSDKPromisesTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLCipher/SQLCipher.framework",
+				"${BUILT_PRODUCTS_DIR}/SalesforceAnalytics/SalesforceAnalytics.framework",
+				"${BUILT_PRODUCTS_DIR}/SalesforceSDKCommon/SalesforceSDKCommon.framework",
+				"${BUILT_PRODUCTS_DIR}/SalesforceSDKCore/SalesforceSDKCore.framework",
+				"${BUILT_PRODUCTS_DIR}/SmartStore/SmartStore.framework",
+				"${BUILT_PRODUCTS_DIR}/SmartSync/SmartSync.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLCipher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SalesforceAnalytics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SalesforceSDKCommon.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SalesforceSDKCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SmartStore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SmartSync.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SalesforceMobileSDKPromisesTests/Pods-SalesforceMobileSDKPromisesTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C2C6DEB5BC4F23354704853F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SalesforceMobileSDKPromisesTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C6E898506D132732B835C238 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -357,9 +480,33 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		FB2F21BB9E6A8E15B3590820 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SalesforceMobileSDKPromisesTests/Pods-SalesforceMobileSDKPromisesTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B70E9A9821E5867600A402C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B70E9AA121E5867600A402C6 /* ViewController.swift in Sources */,
+				B70E9A9F21E5867600A402C6 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B76CC17C214EF3200023D147 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -382,7 +529,6 @@
 				B76CC1B7214EF39B0023D147 /* SalesforceTestExtensions.swift in Sources */,
 				B76CC1BC214EF39B0023D147 /* SyncManagerBaseTest.swift in Sources */,
 				B76CC1B6214EF39B0023D147 /* SalesforceSwiftSDKTests.swift in Sources */,
-				B76CC190214EF3200023D147 /* SalesforceMobileSDKPromisesTests.swift in Sources */,
 				B76CC1B8214EF39B0023D147 /* SalesforceTestCodables.swift in Sources */,
 				B76CC1B9214EF39B0023D147 /* SalesforceSwiftSDKBaseTest.swift in Sources */,
 				B76CC1B5214EF39B0023D147 /* SFRestAPITests.swift in Sources */,
@@ -393,6 +539,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B70E9AB321E5945E00A402C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B70E9A9B21E5867600A402C6 /* SalesforceMobileSDKPromisesTestApp */;
+			targetProxy = B70E9AB221E5945E00A402C6 /* PBXContainerItemProxy */;
+		};
 		B76CC18D214EF3200023D147 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B76CC180214EF3200023D147 /* SalesforceMobileSDKPromises */;
@@ -400,7 +551,67 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		B70E9AA221E5867600A402C6 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B70E9AA321E5867600A402C6 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B70E9AA721E5867800A402C6 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B70E9AA821E5867800A402C6 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		B70E9AAC21E5867800A402C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MZ6CUAC8S3;
+				INFOPLIST_FILE = SalesforceMobileSDKPromisesTestApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.salesforce.mobilesdk.SalesforceMobileSDKPromisesTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B70E9AAD21E5867800A402C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MZ6CUAC8S3;
+				INFOPLIST_FILE = SalesforceMobileSDKPromisesTestApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.salesforce.mobilesdk.SalesforceMobileSDKPromisesTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B76CC193214EF3200023D147 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -575,6 +786,7 @@
 		};
 		B76CC199214EF3200023D147 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B6329DF80DABB958C8DCD50 /* Pods-SalesforceMobileSDKPromisesTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -588,11 +800,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SalesforceMobileSDKPromisesTestApp.app/SalesforceMobileSDKPromisesTestApp";
 			};
 			name = Debug;
 		};
 		B76CC19A214EF3200023D147 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B3A52B04CA8F1A4CCAE7EA9 /* Pods-SalesforceMobileSDKPromisesTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -606,12 +820,22 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SalesforceMobileSDKPromisesTestApp.app/SalesforceMobileSDKPromisesTestApp";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B70E9AAB21E5867800A402C6 /* Build configuration list for PBXNativeTarget "SalesforceMobileSDKPromisesTestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B70E9AAC21E5867800A402C6 /* Debug */,
+				B70E9AAD21E5867800A402C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B76CC17B214EF3200023D147 /* Build configuration list for PBXProject "SalesforceMobileSDKPromises" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

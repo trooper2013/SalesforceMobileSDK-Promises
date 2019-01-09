@@ -28,7 +28,7 @@ import SalesforceSDKCore
 import SmartStore
 import SmartSync
 import PromiseKit
-@testable import SalesforceSwiftSDK
+@testable import SalesforceMobileSDKPromises
 
 //Global Constants
 let TYPE = "type"
@@ -71,11 +71,11 @@ class SyncManagerBaseTest: SalesforceSwiftSDKBaseTest {
     
     override func setUp() {
         super.setUp()
-        currentUser = UserAccountManager.sharedInstance().currentUser
-        store = SmartStore.sharedStore(name: SmartStore.defaultStoreName, user: currentUser!)
+        currentUser = UserAccountManager.shared.currentUserAccount
+        store = SmartStore.shared(withName: SmartStore.defaultStoreName, forUserAccount: currentUser!)
         syncManager = SyncManager.sharedInstance(store:store!)
         
-        globalStore = SmartStore.sharedGlobalStore(name: SmartStore.defaultStoreName)
+        globalStore = SmartStore.sharedGlobal(withName: SmartStore.defaultStoreName)
         globalSyncManager = SyncManager.sharedInstance(store: globalStore!)
     }
     
@@ -124,15 +124,15 @@ class SyncManagerBaseTest: SalesforceSwiftSDKBaseTest {
    
     func createContactsLocally(count: UInt) -> Promise<[[String:Any]]> {
         let contacts:[Dictionary<String,Any>]  = createContacts(count: count,isLocal: true)
-        return (self.store?.Promises.upsertEntries(entries: contacts, soupName: CONTACTS_SOUP))!
+        return (self.store?.promises.upsertEntries(entries: contacts, soupName: CONTACTS_SOUP))!
     }
     
     func dropContactsSoup() -> Promise<Void> {
-        return (self.store?.Promises.removeSoup(soupName: CONTACTS_SOUP))!
+        return (self.store?.promises.removeSoup(soupName: CONTACTS_SOUP))!
     }
     
    func createContactsSoup() -> Promise<Bool> {
-        let indexSpecs:[AnyObject]! = [
+        let indexSpecs:[SoupIndex]! = [
             SoupIndex(path: ID, indexType: kSoupIndexTypeString, columnName: nil)!,
             SoupIndex(path:FIRST_NAME, indexType: kSoupIndexTypeString, columnName:nil)!,
             SoupIndex(path:LAST_NAME, indexType:kSoupIndexTypeString, columnName:nil)!,
@@ -144,34 +144,30 @@ class SyncManagerBaseTest: SalesforceSwiftSDKBaseTest {
             SoupIndex(path:kSyncTargetLocal, indexType:kSoupIndexTypeString, columnName:nil)!,
             SoupIndex(path:kSyncTargetSyncId, indexType:kSoupIndexTypeInteger, columnName:nil)!
         ]
-        return (self.store?.Promises.registerSoup(soupName: CONTACTS_SOUP, indexSpecs: indexSpecs))!
+        return (self.store?.promises.registerSoup(soupName: CONTACTS_SOUP, indexSpecs: indexSpecs))!
     }
     
     func fetchAllTestContactsFromServer() throws -> Promise<SFRestResponse> {
-        guard let sfRestApi = RestClient.sharedInstance(withUser: currentUser!) else {
+        guard let sfRestApi = RestClient.restClient(for: currentUser!) else {
             return Promise { _ in
                 throw TestError.InitializationError
             }
         }
-        return sfRestApi.Promises
-            .query(soql: "Select Id from Contact where FirstName LIKE 'FC_%'")
-            .then { request in
-                return sfRestApi.Promises.send(request: request)
-        }
+        let promises = sfRestApi.promises
+        let request = sfRestApi.request(forQuery: "Select Id from Contact where FirstName LIKE 'FC_%'")
+        return promises.send(request: request)
     }
     
     func fetchContactsFromServer(contactIds: [String]) throws -> Promise<SFRestResponse> {
-        guard let sfRestApi = RestClient.sharedInstance(withUser: currentUser!) else {
+        guard let sfRestApi = RestClient.restClient(for: currentUser!) else {
             return Promise { _ in
                 throw TestError.InitializationError
             }
         }
+        let promises = sfRestApi.promises
         let inString = contactIds.joined(separator: "','")
-        return sfRestApi.Promises
-            .query(soql: "Select \(contactFieldList.joined(separator: ",")) from Contact where Id in ('\(inString)')" )
-            .then { request in
-                return sfRestApi.Promises.send(request: request)
-        }
+        let request = sfRestApi.request(forQuery: "Select \(contactFieldList.joined(separator: ",")) from Contact where Id in ('\(inString)')")
+        return promises.send(request: request)
     }
     
     func createSyncDownTargetFor(contactIds: [String]) -> SoqlSyncDownTarget {
@@ -182,23 +178,21 @@ class SyncManagerBaseTest: SalesforceSwiftSDKBaseTest {
     }
     
     func deleteContactsFromServer(contactIds : [String]) throws -> Promise<Void> {
-        guard let sfRestApi = RestClient.sharedInstance(withUser: currentUser!) else {
+        guard let sfRestApi = RestClient.restClient(for: currentUser!) else {
             return Promise { _ in
                 throw TestError.InitializationError
             }
         }
         var requests: [RestRequest] = []
         contactIds.forEach { id in
-            requests.append(sfRestApi.buildDeleteRequest(forObjectType: CONTACT_TYPE, objectId: id))
+            requests.append(sfRestApi.requestForDelete(withObjectType: CONTACT_TYPE, objectId: id))
         }
         
-        return sfRestApi.Promises
-            .batch(requests: requests, haltOnError: false)
-            .then { request -> Promise<SFRestResponse> in
-                return sfRestApi.Promises.send(request: request)
-            }.then { _ -> Promise<Void> in
-                return .value(())
+        let batchRequest = sfRestApi.batchRequest(requests, haltOnError: false)
+        return sfRestApi.promises.send(request: batchRequest).then {_ in
+            return Promise()
         }
+        
     }
     
     func deleteAllTestContactsFromServer() throws -> Promise<Void> {
@@ -210,7 +204,7 @@ class SyncManagerBaseTest: SalesforceSwiftSDKBaseTest {
             .build()
         
         return
-            (self.store?.Promises.query(querySpec: querySpec, pageIndex: 0)
+            (self.store?.promises.query(querySpec: querySpec, pageIndex: 0)
                 .then { result -> Promise<[String]> in
                     XCTAssertTrue(result.count>0)
                     var contactIds:[String] = []
@@ -227,7 +221,7 @@ class SyncManagerBaseTest: SalesforceSwiftSDKBaseTest {
     }
     
     func createContactsOnServer(noOfRecords: UInt) throws -> Promise<[String]> {
-        guard let sfRestApi = RestClient.sharedInstance(withUser: currentUser!) else {
+        guard let sfRestApi = RestClient.restClient(for: currentUser!) else {
             return Promise { _ in
                 throw TestError.InitializationError
             }
@@ -238,13 +232,11 @@ class SyncManagerBaseTest: SalesforceSwiftSDKBaseTest {
         let contacts = self.createContacts(count: noOfRecords,isLocal: false)
         
         contacts.forEach { contact in
-            requests.append(sfRestApi.buildCreateRequest(forObjectType: CONTACT_TYPE, fields: contact))
+            requests.append(sfRestApi.requestForCreate(withObjectType: CONTACT_TYPE, fields: contact))
         }
-        
-        return sfRestApi.Promises.batch(requests: requests, haltOnError: false)
-                .then { request in
-                    sfRestApi.Promises.send(request: request)
-                }.then { response ->Promise<[String]> in
+        let batchRequest = sfRestApi.batchRequest(requests, haltOnError: false)
+        return sfRestApi.promises.send(request: batchRequest)
+               .then { response ->Promise<[String]> in
                     return .value(self.getIdsFromBatchResults(response: response))
                 }
     }

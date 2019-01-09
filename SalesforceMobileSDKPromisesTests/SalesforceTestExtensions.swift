@@ -28,6 +28,39 @@ import SalesforceSDKCore
 import SalesforceMobileSDKPromises
 import XCTest
 
+protocol ProtocolStoredProperty {
+    associatedtype T
+    func getAssociatedObject(_ key: UnsafeRawPointer!, defaultValue: T) -> T
+}
+
+public extension Decodable {
+    public static func decode(data: Data) throws -> Self {
+        let decoder = JSONDecoder()
+        return try decoder.decode(Self.self, from: data)
+    }
+}
+
+public extension Encodable {
+    public func encode() throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        return try encoder.encode(self)
+    }
+}
+
+extension ProtocolStoredProperty {
+    public func getAssociatedObject(_ key: UnsafeRawPointer!, defaultValue: T) -> T {
+        guard let value = objc_getAssociatedObject(self, key) as? T else {
+            return defaultValue
+        }
+        return value
+    }
+    
+    public func setAssociatedObject(storedProperty: UnsafeRawPointer!, newValue: T) {
+        objc_setAssociatedObject(self, storedProperty, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+}
+
 protocol Defaultable {
     static var defaultValue: Self { get }
 }
@@ -41,7 +74,7 @@ extension String: Defaultable {
 }
 
 struct State  {
-    var appConfig: AppConfig?
+    var appConfig: BootConfig?
     var currentUser: UserAccount?
 }
 
@@ -92,7 +125,7 @@ extension String {
     }
 }
 
-extension SalesforceSDK : ProtocolStoredProperty  {
+extension SalesforceManager : ProtocolStoredProperty  {
     
     typealias T = State
     
@@ -111,20 +144,20 @@ extension SalesforceSDK : ProtocolStoredProperty  {
     
     func saveState() -> Void {
         var oldState = State()
-        oldState.appConfig = self.appConfig
-        oldState.currentUser = UserAccountManager.sharedInstance().currentUser
+        oldState.appConfig = self.bootConfig
+        oldState.currentUser = UserAccountManager.shared.currentUserAccount
         self.state = oldState
     }
     
     func restoreState() -> Void {
-        self.appConfig = state.appConfig
-        UserAccountManager.sharedInstance().currentUser =  state.currentUser
+        self.bootConfig = state.appConfig
+        UserAccountManager.shared.currentUserAccount =  state.currentUser
         state = State()
     }
 }
 
 struct  TestContext {
-    var credential: AuthCredentials?
+    var credential: OAuthCredentials?
     var testConfig: TestConfig?
 }
 
@@ -162,16 +195,9 @@ extension XCTestCase  : ProtocolStoredProperty {
         }
     }
     
-    class func refreshCredentials(credentials: AuthCredentials) -> Promise<UserAccount> {
-        SalesforceSwiftSDKManager.Builder.configure { (appconfig: AppConfig) -> Void in
-            appconfig.shouldAuthenticate = false
-            appconfig.oauthScopes = ["web", "api"]
-            appconfig.remoteAccessConsumerKey = (SalesforceSwiftSDKTests.testConfig?.testClientId)!
-            appconfig.oauthRedirectURI = (SalesforceSwiftSDKTests.testConfig?.testRedirectUri)!
-            }.done()
-        
+    class func refreshCredentials(credentials: OAuthCredentials) -> Promise<UserAccount> {
         return UserAccountManager
-            .sharedInstance().Promises
+            .shared.promises
             .refresh(credentials: credentials)
     }
     
@@ -187,16 +213,16 @@ extension XCTestCase  : ProtocolStoredProperty {
         }
     }
     
-    func createNewUser(indx: Int) -> UserAccount {
-        let kUserIdFormatString = "005R0000000Dsl"
-        let kOrgIdFormatString =  "00D000000000062EA"
-        let credentials = AuthCredentials(identifier: "identifier-\(UInt(indx))", clientId: "fakeClientIdForTesting", encrypted: true)
-        let user = UserAccount(credentials: credentials!)
-        let userId = String(format: kUserIdFormatString, UInt(indx))
-        let orgId = String(format: kOrgIdFormatString, UInt(indx))
-        user.credentials.identityUrl = URL(string: "https://test.salesforce.com/id/\(orgId)/\(userId)")
-        try! UserAccountManager.sharedInstance().saveAccount(forUser: user)
-        return user
-    }
+//    func createNewUser(indx: Int) -> UserAccount {
+//        let kUserIdFormatString = "005R0000000Dsl"
+//        let kOrgIdFormatString =  "00D000000000062EA"
+//        let credentials = OAuthCredentials(identifier: "identifier-\(UInt(indx))", clientId: "fakeClientIdForTesting", encrypted: true)
+//        let user = UserAccount(credentials: credentials!)
+//        let userId = String(format: kUserIdFormatString, UInt(indx))
+//        let orgId = String(format: kOrgIdFormatString, UInt(indx))
+//        user.credentials.identityUrl = URL(string: "https://test.salesforce.com/id/\(orgId)/\(userId)")
+//        try! UserAccountManager.shared..saveAccount(forUser: user)
+//        return user
+//    }
     
 }

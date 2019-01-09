@@ -28,7 +28,7 @@ import SmartStore
 import SmartSync
 import PromiseKit
 
-@testable import SalesforceSwiftSDK
+@testable import SalesforceMobileSDKPromises
 
 class SmartSyncManagerTests: SyncManagerBaseTest {
     
@@ -75,14 +75,14 @@ class SmartSyncManagerTests: SyncManagerBaseTest {
             contactIds = ids
             let syncDownTarget = super.createSyncDownTargetFor(contactIds: contactIds)
             let syncOptions    = SyncOptions.newSyncOptions(forSyncDown: SyncMergeMode.overwrite)
-            return (self.syncManager?.Promises.syncDown(target: syncDownTarget, options: syncOptions, soupName: CONTACTS_SOUP))!
+            return (self.syncManager?.promises.syncDown(target: syncDownTarget, options: syncOptions, soupName: CONTACTS_SOUP))!
         }
         .then { syncState -> Promise<UInt> in
             XCTAssertTrue(syncState.isDone())
             let querySpec =  QuerySpec.Builder(soupName: CONTACTS_SOUP)
                                         .queryType(value: .range)
                                         .build()
-            return (self.store?.Promises.count(querySpec: querySpec))!
+            return (self.store?.promises.count(querySpec: querySpec))!
         }
         .then { count -> Promise<Void>  in
             XCTAssertTrue(count==numberOfRecords)
@@ -110,7 +110,7 @@ class SmartSyncManagerTests: SyncManagerBaseTest {
                 XCTAssertTrue(value [kSyncTargetLocallyCreated] as! Bool == true)
             }
                 let syncOptions = SyncOptions.newSyncOptions(forSyncUp: contactSyncFieldList, mergeMode: SyncMergeMode.overwrite)
-            return (self.syncManager?.Promises.syncUp(options: syncOptions, soupName: CONTACTS_SOUP))!
+            return (self.syncManager?.promises.syncUp(options: syncOptions, soupName: CONTACTS_SOUP))!
         }
         .then { syncState -> Promise<Void> in
              XCTAssertTrue(syncState.isDone())
@@ -138,7 +138,7 @@ class SmartSyncManagerTests: SyncManagerBaseTest {
                 contactIds = ids
                 let syncDownTarget = super.createSyncDownTargetFor(contactIds: contactIds)
                 let syncOptions    = SyncOptions.newSyncOptions(forSyncDown: SyncMergeMode.overwrite)
-                return (self.syncManager?.Promises.syncDown(target: syncDownTarget, options: syncOptions, soupName: CONTACTS_SOUP))!
+                return (self.syncManager?.promises.syncDown(target: syncDownTarget, options: syncOptions, soupName: CONTACTS_SOUP))!
             }
             .then { syncState -> Promise<UInt> in
                 XCTAssertTrue(syncState.isDone())
@@ -146,7 +146,7 @@ class SmartSyncManagerTests: SyncManagerBaseTest {
                 let querySpec =  QuerySpec.Builder(soupName: CONTACTS_SOUP)
                     .queryType(value: .range)
                     .build()
-                return (self.store?.Promises.count(querySpec: querySpec))!
+                return (self.store?.promises.count(querySpec: querySpec))!
             }
             .then { count -> Promise<Void>  in
                 XCTAssertTrue(count==numberOfRecords)
@@ -154,7 +154,7 @@ class SmartSyncManagerTests: SyncManagerBaseTest {
             }
             .then { _ -> Promise<(SyncStatus, UInt)> in
                 XCTAssertTrue(syncId > 0)
-                return (self.syncManager?.Promises.cleanResyncGhosts(syncId: syncId))!
+                return (self.syncManager?.promises.cleanResyncGhosts(syncId: syncId))!
             }
             .done { (syncStateStatus, numRecords) in
                 XCTAssertTrue(syncStateStatus==SyncStatus.done)
@@ -179,7 +179,7 @@ class SmartSyncManagerTests: SyncManagerBaseTest {
             contactIds = ids
             let syncDownTarget = super.createSyncDownTargetFor(contactIds: contactIds)
             let syncOptions    = SyncOptions.newSyncOptions(forSyncDown: SyncMergeMode.overwrite)
-            return (self.syncManager?.Promises.syncDown(target: syncDownTarget, options: syncOptions, soupName: CONTACTS_SOUP))!
+            return (self.syncManager?.promises.syncDown(target: syncDownTarget, options: syncOptions, soupName: CONTACTS_SOUP))!
         }
         .then { syncState -> Promise<UInt> in
             XCTAssertTrue(syncState.isDone())
@@ -187,7 +187,7 @@ class SmartSyncManagerTests: SyncManagerBaseTest {
             let querySpec =  QuerySpec.Builder(soupName: CONTACTS_SOUP)
                 .queryType(value: .range)
                 .build()
-            return (self.store?.Promises.count(querySpec: querySpec))!
+            return (self.store?.promises.count(querySpec: querySpec))!
         }
         .then { count -> Promise<Void>  in
             XCTAssertTrue(count==numberOfRecords)
@@ -195,7 +195,7 @@ class SmartSyncManagerTests: SyncManagerBaseTest {
         }
             .then { _ -> Promise<SyncState> in
             XCTAssertTrue(syncId > 0)
-            return (self.syncManager?.Promises.reSync(syncId: syncId))!
+            return (self.syncManager?.promises.reSync(syncId: syncId))!
         }
         .done { syncState in
             XCTAssertTrue(syncState.isDone())

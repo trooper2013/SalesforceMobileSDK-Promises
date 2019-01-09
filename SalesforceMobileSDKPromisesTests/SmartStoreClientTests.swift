@@ -27,7 +27,7 @@ import XCTest
 import SalesforceSDKCore
 import PromiseKit
 import SmartStore
-@testable import SalesforceSwiftSDK
+@testable import SalesforceMobileSDKPromises
 
 class SmartStoreClientTests: SalesforceSwiftSDKBaseTest {
     
@@ -58,7 +58,7 @@ class SmartStoreClientTests: SalesforceSwiftSDKBaseTest {
                 return .value(globalStore)
             }
             .then { store -> Promise<(Bool,SmartStore)>  in
-                let result  = store.soupExists(soupName)
+                let result  = store.soupExists(forName: soupName)
                 return .value((result,store))
             }
             .then { (result,store) -> Promise<Void> in
@@ -84,7 +84,7 @@ class SmartStoreClientTests: SalesforceSwiftSDKBaseTest {
                 return .value(localStore)
             }
             .then { store -> Promise<(Bool,SmartStore)>  in
-                let result  = store.soupExists(soupName)
+                let result  = store.soupExists(forName: soupName)
                 return .value((result,store))
             }
             .then { (result,store) -> Promise<Void> in
@@ -111,10 +111,10 @@ class SmartStoreClientTests: SalesforceSwiftSDKBaseTest {
                 return .value(localStore)
             }
             .then { store -> Promise<Bool>  in
-                let result  = store.soupExists(soupName)
+                let result  = store.soupExists(forName: soupName)
                 XCTAssertFalse(result)
                 let indexSpecs = SoupIndex.asArraySoupIndexes([ ["path": "key"], ["type" : "string"] ])
-                return store.Promises.registerSoup(soupName: soupName, indexSpecs: indexSpecs)
+                return store.promises.registerSoup(soupName: soupName, indexSpecs: indexSpecs)
             }
             .then { soupCreated -> Promise<Void> in
                 XCTAssertTrue(soupCreated)
@@ -135,15 +135,15 @@ class SmartStoreClientTests: SalesforceSwiftSDKBaseTest {
         let soupName = "WONTONSOUP"
         let expectation = XCTestExpectation(description: "CreateAndRemoveSoup")
         
-        let store: SmartStore  = SmartStore.sharedStore(name: lclStoreName)!
-        let result  = store.soupExists(soupName)
+        let store: SmartStore  = SmartStore.shared(withName: lclStoreName)!
+        let result  = store.soupExists(forName: soupName)
         XCTAssertFalse(result)
         let indexSpecs = SoupIndex.asArraySoupIndexes([ ["path": "key"], ["type" : "string"]])
             
-        store.Promises.registerSoup(soupName: soupName, indexSpecs: indexSpecs)
+        store.promises.registerSoup(soupName: soupName, indexSpecs: indexSpecs)
         .then { soupCreated -> Promise<Void> in
             XCTAssertTrue(soupCreated)
-            return store.Promises.removeSoup(soupName: soupName)
+            return store.promises.removeSoup(soupName: soupName)
         }
         .then { _ in
            return SFSmartStoreClient.removeSharedStore(withName: lclStoreName)

@@ -182,7 +182,6 @@ extension RestClient {
          */
         public func send(request :RestRequest) -> Promise<SFRestResponse> {
             return Promise {  resolver in
-                
                 guard let api = self.api else {
                     resolver.reject(RestClientError.RestClientInvalidState)
                     return

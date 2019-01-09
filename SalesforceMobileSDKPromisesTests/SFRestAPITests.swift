@@ -26,7 +26,7 @@ import Foundation
 import XCTest
 import SalesforceSDKCore
 import PromiseKit
-@testable import SalesforceSwiftSDK
+@testable import SalesforceMobileSDKPromises
 
 class SFRestAPITests: SalesforceSwiftSDKBaseTest {
   
@@ -53,14 +53,12 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
         
         var restResonse : Dictionary<String, Any>?
         var restError : Error?
-        let restApi  = RestClient.sharedInstance()
+        let restApi  = RestClient.shared
         XCTAssertNotNil(restApi)
         let exp = expectation(description: "restApi")
-        
-        restApi.Promises.query(soql: "SELECT Id,FirstName,LastName FROM User")
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
+        let request = restApi.request(forQuery: "SELECT Id,FirstName,LastName FROM User")
+            //.promises.query(soql: "SELECT Id,FirstName,LastName FROM User")
+        restApi.promises.send(request: request)
         .done { sfRestResponse in
             restResonse = sfRestResponse.asJsonDictionary()
             exp.fulfill()
@@ -80,14 +78,13 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
         var restResonse : Dictionary<String, Any>?
         var restError : Error?
         
-        let restApi  = RestClient.sharedInstance()
+        let restApi  = RestClient.shared
         XCTAssertNotNil(restApi)
+        
+        let request = restApi.request(forQueryAll: "SELECT Id,FirstName,LastName FROM User")
         let exp = expectation(description: "restApi")
         
-        restApi.Promises.queryAll(soql: "SELECT Id,FirstName,LastName FROM User")
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
+        restApi.promises.send(request: request)
         .done { sfRestResponse in
             restResonse = sfRestResponse.asJsonDictionary()
             exp.fulfill()
@@ -107,14 +104,13 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
         var restResonse : Dictionary<String, Any>?
         var restError : Error?
         
-        let restApi  = RestClient.sharedInstance()
+        let restApi  = RestClient.shared
         XCTAssertNotNil(restApi)
+        
+        let request = restApi.requestForDescribeGlobal()
         let exp = expectation(description: "restApi")
         
-        restApi.Promises.describeGlobal()
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
+        restApi.promises.send(request: request)
         .done { sfRestResponse in
             restResonse = sfRestResponse.asJsonDictionary()
             exp.fulfill()
@@ -133,14 +129,13 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
         
         var restResonse : Dictionary<String, Any>?
         var restError : Error?
-        let restApi  = RestClient.sharedInstance()
+        let restApi  = RestClient.shared
         XCTAssertNotNil(restApi)
+        
+        let request = restApi.requestForDescribe(withObjectType: "Account")
         let exp = expectation(description: "restApi")
         
-        restApi.Promises.describe(objectType: "Account")
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
+        restApi.promises.send(request: request)
         .done { sfRestResponse in
             restResonse = sfRestResponse.asJsonDictionary()
             exp.fulfill()
@@ -158,14 +153,13 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
         
         var restResonse : String?
         var restError : Error?
-        let restApi  = RestClient.sharedInstance()
+        let restApi  = RestClient.shared
         XCTAssertNotNil(restApi)
-        let exp = expectation(description: "restApi")
         
-        restApi.Promises.describe(objectType: "Account")
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
+        let request = restApi.requestForDescribe(withObjectType: "Account")
+        let exp = expectation(description: "restApi")
+       
+        restApi.promises.send(request: request)
         .done { sfRestResponse in
             restResonse = sfRestResponse.asString()
             exp.fulfill()
@@ -182,57 +176,41 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
     func testCreateUpdateQueryDelete() {
         
         var restError : Error?
-        let restApi  = RestClient.sharedInstance()
+        let restApi  = RestClient.shared
         XCTAssertNotNil(restApi)
-        let exp = expectation(description: "restApi")
         
-        // create, uodate ,query delete chain
-        restApi.Promises.create(objectType: "Contact", fields:["FirstName": "John",
-                                                              "LastName": "Petrucci"])
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
-            .then { sfRestResponse -> Promise<RestRequest> in
+        let request = restApi.requestForCreate(withObjectType:"Contact", fields:["FirstName": "John",
+                                                                                 "LastName": "Petrucci"])
+        let exp = expectation(description: "restApi")
+        let restApiPromises = restApi.promises
+        restApi.promises.send(request: request)
+            .then { sfRestResponse -> Promise<SFRestResponse> in
             let restResonse = sfRestResponse.asJsonDictionary()
             XCTAssertNotNil(restResonse)
             XCTAssertNotNil(restResonse["id"])
-            // retrieve
-            return restApi.Promises.retrieve(objectType: "Contact", objectId: restResonse["id"] as! String, fieldList: "FirstName","LastName")
+           let nextRequest = restApi.requestForRetrieve(withObjectType: "Contact", objectId: restResonse["id"] as! String, fieldList: "FirstName,LastName")
+            return restApiPromises.send(request: nextRequest)
         }
-        .then {  (request) -> Promise<SFRestResponse> in
-            XCTAssertNotNil(request)
-            return restApi.Promises.send(request: request)
-        }
-            .then { sfRestResponse -> Promise<RestRequest> in
-            let restResonse = sfRestResponse.asJsonDictionary()
+        .then {  (restResonse) -> Promise<SFRestResponse> in
             XCTAssertNotNil(restResonse)
-            // update
-            return  restApi.Promises.update(objectType: "Contact", objectId: restResonse["Id"] as! String, fieldList: ["FirstName" : "Steve","LastName" : "Morse"], ifUnmodifiedSince: nil)
+            let restResonse = restResonse.asJsonDictionary()
+            let nextRequest = restApi.requestForUpdate(withObjectType: "Contact", objectId: restResonse["Id"] as! String, fields: ["FirstName" : "Steve","LastName" : "Morse"])
+            return restApiPromises.send(request: nextRequest)
         }
-        .then { request -> Promise<SFRestResponse> in
-            XCTAssertNotNil(request)
-            return restApi.Promises.send(request: request)
-        }
-        .then { data -> Promise<RestRequest> in
+        .then { data -> Promise<SFRestResponse> in
             XCTAssertNotNil(data)
-            return restApi.Promises.query(soql : "Select Id,FirstName,LastName from Contact where LastName='Morse'")
+            let nextRequest = restApi.request(forQuery: "Select Id,FirstName,LastName from Contact where LastName='Morse'")
+            return restApiPromises.send(request: nextRequest)
         }
-        .then {  request -> Promise<SFRestResponse> in
-            XCTAssertNotNil(request)
-            return restApi.Promises.send(request: request)
-        }
-        .then { (sfRestResponse) -> Promise<RestRequest> in
+        .then { (sfRestResponse) -> Promise<SFRestResponse> in
             let restResonse = sfRestResponse.asJsonDictionary()
             XCTAssertNotNil(restResonse)
             XCTAssertNotNil(restResonse["records"])
             var records: [Any] = restResonse["records"] as! [Any]
             var record: [String:Any] = records[0] as! [String:Any]
-            return  restApi.Promises.delete(objectType: "Contact", objectId: record["Id"] as! String)
-        }
-        .then { request -> Promise<SFRestResponse> in
-            XCTAssertNotNil(request)
-            return restApi.Promises.send(request: request)
-        } .done { sfRestResponse in
+            let nextRequest =  restApi.requestForDelete(withObjectType: "Contact", objectId: record["Id"] as! String)
+            return restApiPromises.send(request: nextRequest)
+        }.done { sfRestResponse in
             let strResp = sfRestResponse.asJsonDictionary()
             XCTAssertNotNil(strResp)
             exp.fulfill()
@@ -248,14 +226,13 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
     func testSearch() {
         var restResonse : Dictionary<String, Any>?
         var restError : Error?
-        let restApi  = RestClient.sharedInstance()
+        let restApi  = RestClient.shared
         XCTAssertNotNil(restApi)
-        let exp = expectation(description: "restApi")
         
-        restApi.Promises.search(sosl: "FIND {blah} IN NAME FIELDS RETURNING User")
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
+        let exp = expectation(description: "restApi")
+        let request = restApi.request(forSearch: "FIND {blah} IN NAME FIELDS RETURNING User")
+       
+        restApi.promises.send(request: request)
         .done { sfRestResponse in
             restResonse = sfRestResponse.asJsonDictionary()
             exp.fulfill()
@@ -272,40 +249,14 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
     func testSearchScopeAndOrder() {
         var restResonse : [Dictionary<String, Any>]?
         var restError : Error?
-        let restApi  = RestClient.sharedInstance()
+        let restApi  = RestClient.shared
         XCTAssertNotNil(restApi)
-        let exp = expectation(description: "restApi")
         
-        restApi.Promises.searchScopeAndOrder()
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
+        let exp = expectation(description: "restApi")
+        let request = restApi.requestForSearchScopeAndOrder()
+        
+        restApi.promises.send(request: request)
         .done { (sfRestResponse) in
-            restResonse = sfRestResponse.asJsonArray()
-            exp.fulfill()
-        }
-        .catch { error in
-            restError = error
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 10)
-        XCTAssertNil(restError)
-        XCTAssertNotNil(restResonse)
-    }
-    
-    func testSearchLayout() {
-        var restResonse : [Dictionary<String, Any>]?
-        var restError : Error?
-        let restApi  = RestClient.sharedInstance()
-        XCTAssertNotNil(restApi)
-        let exp = expectation(description: "restApi")
-        
-        restApi.Promises.searchResultLayout(objectList: "Account")
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
-        .done { sfRestResponse in
-            print(sfRestResponse.asString())
             restResonse = sfRestResponse.asJsonArray()
             exp.fulfill()
         }
@@ -321,25 +272,20 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
     func testQueryDecodable() {
         
         var restError : Error?
-        let restApi  = RestClient.sharedInstance()
+        let restApi  = RestClient.shared
         XCTAssertNotNil(restApi)
         let exp = expectation(description: "restApi")
-        
+        let request = restApi.requestForCreate(withObjectType: "Contact",fields:["FirstName": "John",
+            "LastName": "Petrucci"])
         // create, uodate ,query delete chain
-        restApi.Promises.create(objectType: "Contact", fields:["FirstName": "John",
-                                                              "LastName": "Petrucci"])
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
-        .then { (sfRestResponse) -> Promise<RestRequest> in
+       
+        restApi.promises.send(request: request)
+        .then { (sfRestResponse) -> Promise<SFRestResponse> in
             let restResonse = sfRestResponse.asJsonDictionary()
             XCTAssertNotNil(restResonse)
             XCTAssertNotNil(restResonse["id"])
-            return restApi.Promises.query(soql : "Select Id,FirstName,LastName from Contact where LastName='Petrucci'")
-        }
-        .then {  request -> Promise<SFRestResponse> in
-            XCTAssertNotNil(request)
-            return restApi.Promises.send(request: request)
+            let nextRequest =  restApi.request(forQuery: "Select Id,FirstName,LastName from Contact where LastName='Petrucci'")
+            return restApi.promises.send(request: request)
         }
         .then { (sfRestResponse) -> Promise<QueryResponse<SampleRecord>> in
             let restResonse = sfRestResponse.asDecodable(type: QueryResponse<SampleRecord>.self) as!  QueryResponse<SampleRecord>
@@ -360,198 +306,7 @@ class SFRestAPITests: SalesforceSwiftSDKBaseTest {
         XCTAssertNil(restError)
     }
     
-    func testPerformQueryDecodable() {
-        
-        var restError : Error?
-        let restApi  = RestClient.sharedInstance()
-        XCTAssertNotNil(restApi)
-        
-        let exp = expectation(description: "restApi")
-        
-        firstly {
-            restApi.Promises.query(soql:"Select Id,FirstName,LastName from Contact where LastName='Petrucci'")
-        }
-        .then {  request -> Promise<SFRestResponse> in
-            XCTAssertNotNil(request)
-            return restApi.Promises.send(request: request)
-        }
-        .done { sfResponse  in
-            XCTAssertNotNil(sfResponse.asDecodable(type: QueryResponse<SampleRecord>.self))
-            exp.fulfill()
-        }
-        .catch { error in
-            restError = error
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 30)
-        XCTAssertNil(restError)
-    }
     
-    func testPerformSearchDecodable() {
-        
-        var restError : Error?
-        let restApi  = RestClient.sharedInstance()
-        XCTAssertNotNil(restApi)
-        
-        let exp = expectation(description: "restApi")
-        
-        firstly {
-            restApi.Promises.search(sosl:"FIND {John} IN ALL FIELDS RETURNING Account(Name), Contact(FirstName,LastName)")
-        }
-        .then {  request -> Promise<SFRestResponse> in
-            XCTAssertNotNil(request)
-            return restApi.Promises.send(request: request)
-        }
-        .done { sfResponse  in
-            XCTAssertNotNil(sfResponse.asDecodable(type: SearchResponse<SearchRecord>.self))
-            exp.fulfill()
-        }
-        .catch { error in
-            restError = error
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 30)
-        XCTAssertNil(restError)
-    }
-    
-    func testCompositeRequest() {
-        // Create account
-        let accountName: String = generateRecordName()
-        let restApi  = RestClient.sharedInstance()
-        var restError : Error?
-        let exp = expectation(description: "restApi")
-       
-        let createAcccountRequest = restApi.buildCreateRequest(forObjectType: "Account", fields: ["Name" : accountName])
-        
-        let contactName: String = generateRecordName()
-        
-        let createContactRequest = restApi.buildCreateRequest(forObjectType: "Contact", fields:["LastName": contactName, "AccountId": "@{refAccount.id}"])
-        
-        let queryForContactRequest = restApi.buildQueryRequest(soql: "select Id, AccountId from Contact where LastName = '\(contactName)'")
-        
-        restApi.Promises.composite(requests: [createAcccountRequest,createContactRequest,queryForContactRequest], refIds: ["refAccount", "refContact", "refQuery"],allOrNone: true)
-        .then { request in
-             restApi.Promises.send(request: request)
-        }.done { sfRestResponse in
-            var response = sfRestResponse.asJsonDictionary()
-            var results = response["compositeResponse"] as! [[String:Any]]
-            XCTAssertNotNil(results)
-            XCTAssertEqual(results[0]["httpStatusCode"] as! Int, 201, "Wrong status for first request")
-            XCTAssertEqual(results[1]["httpStatusCode"] as! Int, 201, "Wrong status for second request")
-            XCTAssertEqual(results[2]["httpStatusCode"] as! Int, 200, "Wrong status for third request")
-            let accountId = ((results[0]["body"] as! [AnyHashable: Any])["id"]) as! String
-            let contactId = ((results[1]["body"] as! [AnyHashable: Any])["id"]) as! String
-            let queryRecords = (results[2]["body"] as! [AnyHashable: Any])["records"] as! [[String: Any]]
-            XCTAssertEqual(1, queryRecords.count, "Wrong number of results for query request")
-            var record = queryRecords[0]
-            XCTAssertEqual(accountId, record["AccountId"] as! String)
-            XCTAssertEqual(contactId, record["Id"] as! String)
-            exp.fulfill()
-        }.catch { error in
-            restError = error
-            exp.fulfill()
-        }
-         wait(for: [exp], timeout: 30)
-         XCTAssertNil(restError)
-   }
-
-    func testBatchRequest() {
-       
-        // Create account
-        let accountName: String = generateRecordName()
-        let restApi  = RestClient.sharedInstance()
-        var restError : Error?
-        let exp = expectation(description: "restApi")
-        
-        let createAccountRequest = restApi.buildCreateRequest(forObjectType: "Account", fields: ["Name" : accountName])
-        
-        let contactName: String = generateRecordName()
-        let createContactRequest = restApi.buildCreateRequest(forObjectType: "Contact", fields: ["LastName": contactName])
-        
-        let queryForAccount = restApi.buildQueryRequest(soql: "select Id from Account where Name = '\(accountName)'")
-        // Query for contact
-        let queryForContact = restApi.buildQueryRequest(soql: "select Id from Contact where Name = '\(contactName)'")
-        
-        // Build batch request
-        restApi.Promises.batch(requests: createAccountRequest, createContactRequest, queryForAccount, queryForContact, haltOnError: true)
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
-        .done { sfRestResponse in
-            let response = sfRestResponse.asJsonDictionary()
-            XCTAssertNotNil(response)
-            let hasErrors =  response["hasErrors"] as! Bool
-            XCTAssertFalse(hasErrors)
-            XCTAssertNotNil(response)
-            exp.fulfill()
-        }.catch { error in
-            restError = error
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 30)
-        XCTAssertNil(restError)
-    }
-    
-    func testOwnedFilesList() {
-        let restApi  = RestClient.sharedInstance()
-        var restError : Error?
-        let exp = expectation(description: "restApi")
-        restApi.Promises.filesOwned(userId: nil, page: 0)
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
-        .done { sfResponse in
-            exp.fulfill()
-        }
-        .catch { error in
-            restError = error
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 10)
-        XCTAssertNil(restError)
-    }
-    
-    func testFilesInUsersGroups() {
-        let restApi  = RestClient.sharedInstance()
-        var restError : Error?
-        let exp = expectation(description: "restApi")
-        restApi.Promises.filesInUsersGroups(userId: nil, page: 0)
-        .then { request in
-            restApi.Promises.send(request: request)
-        }
-        .done { sfResponse in
-            exp.fulfill()
-        }
-        .catch { error in
-            restError = error
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 10)
-        XCTAssertNil(restError)
-    }
-    
-    func testFilesSharedWithUser() {
-     
-        let restApi  = RestClient.sharedInstance()
-        var restError : Error?
-        let exp = expectation(description: "restApi")
-        restApi.Promises.filesShared(userId: nil, page: 0)
-            .then { request in
-                restApi.Promises.send(request: request)
-            }
-            .done { sfResponse in
-                exp.fulfill()
-            }
-            .catch { error in
-                restError = error
-                exp.fulfill()
-        }
-        wait(for: [exp], timeout: 10)
-        XCTAssertNil(restError)
-    }
-
     func generateRecordName() -> String {
         let timecode: TimeInterval = Date.timeIntervalSinceReferenceDate
         return "RestClientSwiftTestsiOS\(timecode)"

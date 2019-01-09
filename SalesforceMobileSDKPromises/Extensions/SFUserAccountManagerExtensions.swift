@@ -28,14 +28,14 @@ import SalesforceSDKCore
 
 /** An Extension of SFUserAccountManager. Provides SFUserAccountMnager api(s) wrapped in Promises.
  ```
- var userManager = SFUserAccountManager.sharedInstance()
- userManager.Promises.login()
+ var userManager = UserAccountManager.shared
+ userManager.promises.login()
  .then { account in
     //account represents the logged in user
-    // SFUserAccountManager.sharedInstance().currentUser = account
+    // UserAccountManager.shared.currentUserAccount = account
  }
  .then {
-    userManager.Promises.logout()
+    userManager.promises.logout()
  }
  ```
  */
@@ -54,7 +54,7 @@ extension UserAccountManager {
          Login API wrapped in a promise.
         
          ```
-         SFUserAccountManager.sharedInstance().Promises.login()
+         UserAccountManager.shared.promises.login()
          .then { account in
              ...
          }
@@ -76,7 +76,7 @@ extension UserAccountManager {
          Refresh Credentials API wrapped in a promise.
          
          ```
-         SFUserAccountManager.sharedInstance().Promises.refresh(credentials)
+         UserAccountManager.shared.promises.refresh(credentials)
          .then { account in
          ...
          }
@@ -99,7 +99,7 @@ extension UserAccountManager {
          Logout wrapped in a promise.
          
          ```
-         SFUserAccountManager.sharedInstance().Promises.logout()
+         UserAccountManager.shared.promises.logout()
          .then {
             // cleanup
          }
@@ -118,7 +118,7 @@ extension UserAccountManager {
          LogoutAllusers wrapped in a promise.
          
          ```
-         SFUserAccountManager.sharedInstance().Promises.logoutAllUsers()
+         UserAccountManager.shared.promises.logoutAllUsers()
          .then {
             // cleanup
          }
@@ -137,7 +137,7 @@ extension UserAccountManager {
          LogoutUser API wrapped in a promise.
          
          ```
-         SFUserAccountManager.sharedInstance().Promises.logoutUser(user)
+         UserAccountManager.shared.promises.logoutUser(user)
          .then {
              // cleanup
          }
@@ -157,7 +157,7 @@ extension UserAccountManager {
          SwitchToUser API wrapped in a promise.
          
          ```
-         SFUserAccountManager.sharedInstance().Promises.switchToUser(user)
+         UserAccountManager.shared.promises.switchToUser(user)
          .then { switchedUser in
             ...
          }
@@ -177,7 +177,7 @@ extension UserAccountManager {
          SwitchToNewUser API wrapped in a promise. Clears current user if the switch
          
          ```
-         SFUserAccountManager.sharedInstance().Promises.switchToNewUser()
+         UserAccountManager.shared.promises.switchToNewUser()
          .then { newUser in
          ...
          }

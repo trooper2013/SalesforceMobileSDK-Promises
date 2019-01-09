@@ -12,6 +12,10 @@ pod 'SalesforceAnalytics', :path => 'mobile_sdk/SalesforceMobileSDK-iOS'
 pod 'SalesforceSDKCore', :path => 'mobile_sdk/SalesforceMobileSDK-iOS'
 pod 'SmartStore', :path => 'mobile_sdk/SalesforceMobileSDK-iOS'
 pod 'SmartSync', :path => 'mobile_sdk/SalesforceMobileSDK-iOS'
+
+target 'SalesforceMobileSDKPromisesTests' do
+    inherit! :search_paths
+end
 end
 
 # Fix for xcode9/fmdb/sqlcipher/cocoapod issue - see https://discuss.zetetic.net/t/ios-11-xcode-issue-implicit-declaration-of-function-sqlite3-key-is-invalid-in-c99/2198/27

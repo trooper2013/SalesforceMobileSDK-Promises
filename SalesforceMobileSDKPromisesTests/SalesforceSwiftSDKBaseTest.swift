@@ -30,28 +30,28 @@ import SmartStore
 
 class SalesforceSwiftSDKBaseTest: XCTestCase {
     
-    static var testCredentials: AuthCredentials?
+    static var testCredentials: OAuthCredentials?
     static var testConfig: TestConfig?
     static var setupComplete = false
     
     override class func setUp() {
         super.setUp()
-        SalesforceSwiftSDKManager.initSDK().shared().saveState()
+        SalesforceSwiftSDKManager.shared.saveState()
         setupComplete = false
         _ = SalesforceSwiftSDKTests.readConfigFromFile(configFile: nil)
             .then { testJsonConfig -> Promise<UserAccount> in
                 SalesforceSwiftSDKTests.testConfig = testJsonConfig
                 SalesforceSwiftSDKTests.testCredentials?.accessToken = nil
-                SalesforceSwiftSDKTests.testCredentials = AuthCredentials(identifier: testJsonConfig.testClientId, clientId: testJsonConfig.testClientId, encrypted: true)
+                SalesforceSwiftSDKTests.testCredentials = OAuthCredentials(identifier: testJsonConfig.testClientId, clientId: testJsonConfig.testClientId, encrypted: true)
                 SalesforceSwiftSDKTests.testCredentials?.refreshToken = SalesforceSwiftSDKTests.testConfig?.refreshToken
                 SalesforceSwiftSDKTests.testCredentials?.redirectUri = SalesforceSwiftSDKTests.testConfig?.testRedirectUri
                 SalesforceSwiftSDKTests.testCredentials?.domain = SalesforceSwiftSDKTests.testConfig?.testLoginDomain
                 SalesforceSwiftSDKTests.testCredentials?.identityUrl = URL(string: (SalesforceSwiftSDKTests.testConfig?.identityUrl)!)
-                UserAccountManager.sharedInstance().loginHost = SalesforceSwiftSDKTests.testConfig?.testLoginDomain
+                UserAccountManager.shared.loginHost = SalesforceSwiftSDKTests.testConfig?.testLoginDomain ?? "login.salesforce.com"
                 return SalesforceSwiftSDKTests.refreshCredentials(credentials:(SalesforceSwiftSDKTests.testCredentials)!)
             }
             .then { userAccount -> Promise<Void> in
-                UserAccountManager.sharedInstance().currentUser = userAccount
+                UserAccountManager.shared.currentUserAccount = userAccount
                 return SFSmartStoreClient.removeAllGlobalStores()
             }
             .then { _  in
@@ -81,7 +81,7 @@ class SalesforceSwiftSDKBaseTest: XCTestCase {
     
     
     override class func tearDown() {
-        SalesforceSwiftSDKManager.shared().restoreState()
+        SalesforceSwiftSDKManager.shared.restoreState()
         super.tearDown()
     }
     
